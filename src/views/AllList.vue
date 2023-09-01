@@ -6,6 +6,8 @@
       </label>
       <input type="text" id="search" placeholder="Search" />
     </div>
+    
+    <List />
 
     <!-- No Pokemon -->
     <div class="not-found">
@@ -18,6 +20,7 @@
 
 <script setup>
 import ButtonComponent from '../components/ButtonComponent.vue';
+import List from '../components/List.vue';
 import Search from '../components/icons/Search.vue';
 </script>
 
@@ -48,9 +51,9 @@ import Search from '../components/icons/Search.vue';
   border: none;
   padding: 0.875rem 2.688rem;
   border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / .05);
+  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.05);
   outline: 2px solid #00000000;
-  transition: all .3s ease-in-out;
+  transition: all 0.3s ease-in-out;
 }
 .search input::placeholder {
   color: var(--gray);
@@ -61,6 +64,7 @@ import Search from '../components/icons/Search.vue';
 
 /* Section no found pokemon */
 .not-found {
+  display: none;
   text-align: center;
 }
 .not-found h1 {
