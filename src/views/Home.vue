@@ -19,7 +19,7 @@
 
 <script setup>
 import PikachuIcon from '../components/icons/PikachuIcon.vue';
-import ButtonComponent from '../components/ButtonComponent.vue';
+import ButtonComponent from '../components/UI/ButtonComponent.vue';
 </script>
 
 <style scoped>

@@ -19,7 +19,7 @@
 </template>
 
 <script setup>
-import StarIcon from '../components/icons/StarIcon.vue';
+import StarIcon from '../icons/StarIcon.vue';
 </script>
 
 <style scoped>
@@ -39,6 +39,7 @@ import StarIcon from '../components/icons/StarIcon.vue';
   color: var(--black);
   background-color: #fff;
   border-radius: 0.375rem;
+  cursor: pointer;
 }
 .pokemon-list p {
   font-size: 1.375rem;

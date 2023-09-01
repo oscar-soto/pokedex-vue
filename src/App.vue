@@ -20,10 +20,17 @@ import AllList from './views/AllList.vue';
   --snow-white: #F5F5F5;
   --white: #F9F9F9;
 }
+* {
+  box-sizing: content-box;
+}
 
 body {
   font-family: 'Lato', sans-serif;
   background-color: var(--white);
+}
+
+#app {
+  min-height: 100vh;
 }
 
 .container {
