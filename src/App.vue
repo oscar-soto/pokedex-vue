@@ -1,18 +1,11 @@
 <script setup>
-import HelloWorld from './components/HelloWorld.vue'
-import Home from './views/Home.vue'
+import AllList from './views/AllList.vue';
+// import Home from './views/Home.vue';
 </script>
 
 <template>
-  <!-- <div>
-    <a href="https://vitejs.dev" target="_blank">
-      <img src="/vite.svg" class="logo" alt="Vite logo" />
-    </a>
-    <a href="https://vuejs.org/" target="_blank">
-      <img src="./assets/vue.svg" class="logo vue" alt="Vue logo" />
-    </a>
-  </div> -->
-  <Home msg="Vite + Vue" />
+  <!-- <Home /> -->
+  <AllList />
 </template>
 
 <style>
@@ -30,10 +23,11 @@ import Home from './views/Home.vue'
 
 body {
   font-family: 'Lato', sans-serif;
+  background-color: var(--white);
 }
 
 .container {
-  max-width: 1280px;
+  max-width: 570px;
   margin: 0 auto;
 }
 </style>

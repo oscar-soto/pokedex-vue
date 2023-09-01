@@ -1,18 +1,20 @@
 <template>
-  <button :disabled="isDisabled">
+  <button :class="{disabled: isDisabled }" :type="type">
     <slot></slot>
   </button>
 </template>
 
-<script>
-export default {
-  props: {
-    isDisabled: {
-      type: Boolean,
-      default: false,
-    },
+<script setup>
+const props = defineProps({
+  isDisabled: {
+    type: Boolean,
+    default: false,
   },
-};
+  type: {
+    type: String,
+    default: 'button',
+  },
+})
 </script>
 
 <style scoped>
@@ -24,12 +26,14 @@ button {
   border: none;
   border-radius: 1.5rem;
   cursor: pointer;
+  outline: none;
   transition: background-color 0.3s ease-in-out;
 }
-button:hover {
+button:hover,
+button:focus {
   background-color: var(--dark-red);
 }
-button:disabled {
+.disabled {
   background-color: var(--gray);
 }
 </style>

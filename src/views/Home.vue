@@ -43,7 +43,6 @@ import ButtonComponent from '../components/ButtonComponent.vue';
   margin: 0 0 1.875rem;
 }
 .home__description p {
-  max-width: 68%;
   font-size: 1.125rem;
   color: var(--dark-gray);
   margin: 0 auto 3.125rem;
