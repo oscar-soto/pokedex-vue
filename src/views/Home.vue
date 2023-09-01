@@ -12,20 +12,14 @@
         to Trainers in the Pokémon world.
       </p>
 
-      <button>Get started</button>
+      <button-component> Get started </button-component>
     </div>
   </section>
 </template>
 
 <script setup>
-import { ref } from 'vue';
 import PikachuIcon from '../components/icons/PikachuIcon.vue';
-
-defineProps({
-  msg: String,
-});
-
-const count = ref(0);
+import ButtonComponent from '../components/ButtonComponent.vue';
 </script>
 
 <style scoped>
@@ -45,9 +39,13 @@ const count = ref(0);
   text-align: center;
 }
 .home__description h1 {
+  font-size: 1.625rem;
   margin: 0 0 1.875rem;
 }
 .home__description p {
-  margin: 0 0 3.125rem;
+  max-width: 68%;
+  font-size: 1.125rem;
+  color: var(--dark-gray);
+  margin: 0 auto 3.125rem;
 }
 </style>
