@@ -1,15 +1,8 @@
 <template>
   <!-- List -->
   <ul class="pokemon-list">
-    <li>
-      <p>Bulbasaur</p>
-
-      <button class="favorite">
-        <StarIcon />
-      </button>
-    </li>
-    <li>
-      <p>Bulbasaur</p>
+    <li v-for="pokemon in pokemons" :key="pokemon.index">
+      <p>{{ pokemon.name }}</p>
 
       <button>
         <StarIcon />
@@ -20,6 +13,12 @@
 
 <script setup>
 import StarIcon from '../icons/StarIcon.vue';
+const props = defineProps({
+  pokemons: {
+    type: Object,
+  },
+});
+
 </script>
 
 <style scoped>
@@ -42,8 +41,9 @@ import StarIcon from '../icons/StarIcon.vue';
   cursor: pointer;
 }
 .pokemon-list p {
-  font-size: 1.375rem;
   margin: 0;
+  text-transform: capitalize;
+  font-size: 1.375rem;
 }
 .pokemon-list button {
   display: grid;

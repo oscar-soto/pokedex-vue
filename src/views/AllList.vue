@@ -1,4 +1,6 @@
 <template>
+  <Loader :isLoading="isLoading" />
+
   <section class="container list">
     <div class="search">
       <label for="search">
@@ -7,7 +9,7 @@
       <input type="text" id="search" placeholder="Search" />
     </div>
 
-    <List />
+    <List :key="1" :pokemons="pokemons" />
 
     <!-- No Pokemon -->
     <div class="not-found">
@@ -16,23 +18,52 @@
       <button-component> Go back home </button-component>
     </div>
   </section>
+
+  <!-- Modal -->
   <Modal />
+
+  <!-- Footer -->
   <Footer />
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue';
+// Components
 import ButtonComponent from '../components/UI/ButtonComponent.vue';
 import List from '../components/layout/List.vue';
 import Footer from '../components/layout/Footer.vue';
 import Modal from '../components/UI/Modal.vue';
 // Icons
 import Search from '../components/icons/Search.vue';
+import { getPokemons } from '../api/pokemonService';
+import Loader from '../components/UI/Loader.vue';
+
+const pokemons = ref({});
+let isLoading = ref(true);
+
+// Get pokemons by api
+const getAllPokemons = async () => {
+  try {
+    const { results } = await getPokemons();
+    pokemons.value = results;
+  } catch (error) {
+    console.log(error);
+    pokemons.value = [];
+  }
+};
+
+onMounted(() => {
+  isLoading = true;
+  getAllPokemons();
+  isLoading = false;
+})
+
 </script>
 
 <style scoped>
 /* General */
 .list {
-  padding-top: 2.188rem ;
+  padding-top: 2.188rem;
   color: var(--black);
 }
 
