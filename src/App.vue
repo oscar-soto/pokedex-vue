@@ -20,8 +20,9 @@ import AllList from './views/AllList.vue';
   --snow-white: #F5F5F5;
   --white: #F9F9F9;
 }
+
 * {
-  box-sizing: content-box;
+  box-sizing: border-box;
 }
 
 body {

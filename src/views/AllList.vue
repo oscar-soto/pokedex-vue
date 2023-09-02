@@ -16,6 +16,7 @@
       <button-component> Go back home </button-component>
     </div>
   </section>
+  <Modal />
   <Footer />
 </template>
 
@@ -23,6 +24,7 @@
 import ButtonComponent from '../components/UI/ButtonComponent.vue';
 import List from '../components/layout/List.vue';
 import Footer from '../components/layout/Footer.vue';
+import Modal from '../components/UI/Modal.vue';
 // Icons
 import Search from '../components/icons/Search.vue';
 </script>
