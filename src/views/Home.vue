@@ -12,7 +12,7 @@
         to Trainers in the Pokémon world.
       </p>
 
-      <button-component> Get started </button-component>
+      <button-component @click="start"> Get started </button-component>
     </div>
   </section>
 </template>
@@ -20,6 +20,10 @@
 <script setup>
 import PikachuIcon from '../components/icons/PikachuIcon.vue';
 import ButtonComponent from '../components/UI/ButtonComponent.vue';
+
+const start = () => {
+  return window.location.href = '#/all'
+}
 </script>
 
 <style scoped>

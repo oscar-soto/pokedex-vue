@@ -5,8 +5,8 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue';
 
-import AllList from './views/AllList.vue';
 import Home from './views/Home.vue';
+import AllList from './views/AllList.vue';
 import FavoriteList from './views/FavoriteList.vue';
 
 const routes = {
@@ -15,17 +15,17 @@ const routes = {
   '/favorite': FavoriteList,
 };
 
-const currentPath = ref(window.location.hash)
+const currentPath = ref(window.location.hash);
 
 const currentView = computed(() => {
-  return routes[currentPath.value.slice(1) || '/'] || 'NotFound'
-})
+  return routes[currentPath.value.slice(1) || '/'] || 'NotFound';
+});
 
 onMounted(() => {
   window.addEventListener('hashchange', () => {
-    currentPath.value = window.location.hash
-  })
-})
+    currentPath.value = window.location.hash;
+  });
+});
 </script>
 
 <style>
