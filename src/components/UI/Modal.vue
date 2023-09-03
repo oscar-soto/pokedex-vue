@@ -26,7 +26,15 @@
         </ul>
 
         <div class="modal__btns">
-          <button-component> Share to my friends </button-component>
+          <input
+            type="text"
+            :value="`name: ${pokemon.name}, weight: ${pokemon.weight}, height: ${pokemon.height}`"
+            class="input-clipboar"
+            id="clipboar"
+          />
+          <button-component @click="getPokemonInfo">
+            Share to my friends
+          </button-component>
 
           <button class="favorite__button">
             <StarIcon />
@@ -38,15 +46,14 @@
 </template>
 
 <script setup>
-// import { ref } from 'vue';
-// import PikachuIcon from '../icons/PikachuIcon.vue';
-import { onMounted, ref, watch } from 'vue';
+import { ref, watch } from 'vue';
 import { getPokemonByName } from '../../api/pokemonService';
 import StarIcon from '../icons/StarIcon.vue';
 import XIcon from '../icons/XIcon.vue';
 import ButtonComponent from './ButtonComponent.vue';
 
 const tagHtml = document.querySelector('html');
+
 
 // Data
 const pokemon = ref([]);
@@ -86,6 +93,15 @@ const getPokemon = async (name) => {
 const toggleModal = () => {
   tagHtml.style.removeProperty('overflow');
   emit('updateIsModalOpen', false);
+};
+
+// Copy info in clipboar
+const getPokemonInfo = () => {
+  const inputClipboar = document.querySelector('#clipboar');
+  inputClipboar.select();
+  inputClipboar.setSelectionRange(0, 999999); // Mobile
+
+  navigator.clipboard.writeText(inputClipboar.value);
 };
 </script>
 
@@ -172,6 +188,9 @@ const toggleModal = () => {
   align-items: center;
   justify-content: space-between;
   margin-top: 0.625rem;
+}
+.input-clipboar {
+  display: none;
 }
 
 .favorite__button {

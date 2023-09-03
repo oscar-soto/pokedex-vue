@@ -9,7 +9,6 @@
       @updateList="searchPokemon = $event"
       v-model:inputValue="inputValue"
     />
-    {{ currentPokemon }}
 
     <!-- List Pokemon -->
     <List
@@ -60,6 +59,12 @@ const isModalOpen = ref(false);
 let inputValue = ref('');
 let isLoading = ref(true);
 
+onMounted(() => {
+  isLoading = true;
+  getAllPokemons();
+  isLoading = false;
+});
+
 // Get pokemons by api
 const getAllPokemons = async () => {
   try {
@@ -70,13 +75,8 @@ const getAllPokemons = async () => {
     pokemons.value = [];
   }
 };
-const emit = defineEmits(['updateList', 'updateCurrentPokemon']);
 
-onMounted(() => {
-  isLoading = true;
-  getAllPokemons();
-  isLoading = false;
-});
+const emit = defineEmits(['updateList', 'updateCurrentPokemon']);
 
 // Clear Search
 const clearSearch = () => {
