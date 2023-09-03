@@ -1,21 +1,28 @@
 <template>
-  <div class="modal" :class="{ active: open }">
+  <div class="modal" :class="{ active: isOpen }">
     <section class="modal__container">
-      <span class="modal__close" @click="open = false">
+      <span class="modal__close" @click="toggleModal">
         <XIcon />
       </span>
 
       <div class="modal__hero">
-        <!-- <PikachuIcon :height="20" :width="20" /> -->
-        <!-- <img src="../icons/BurgerIcon.vue" alt=""> -->
+        <img
+          :src="pokemon.sprites?.other.dream_world.front_default"
+          :alt="`pokemon ${pokemon?.name}`"
+        />
       </div>
 
       <div class="modal__content">
         <ul>
-          <li><span>Name: </span> Squirtle</li>
-          <li><span>Weight: </span> 20</li>
-          <li><span>Height: </span> 18</li>
-          <li><span>Types: </span> Normal, Water</li>
+          <li><span>Name: </span> {{ pokemon?.name }}</li>
+          <li><span>Weight: </span> {{ pokemon?.weight }}</li>
+          <li><span>Height: </span> {{ pokemon?.height }}</li>
+          <li>
+            <span>Types: </span>
+            <p v-for="(type, i) in pokemon?.types" :key="i">
+              {{ type.type.name }}
+            </p>
+          </li>
         </ul>
 
         <div class="modal__btns">
@@ -33,21 +40,58 @@
 <script setup>
 // import { ref } from 'vue';
 // import PikachuIcon from '../icons/PikachuIcon.vue';
+import { onMounted, ref, watch } from 'vue';
+import { getPokemonByName } from '../../api/pokemonService';
 import StarIcon from '../icons/StarIcon.vue';
 import XIcon from '../icons/XIcon.vue';
 import ButtonComponent from './ButtonComponent.vue';
 
+const tagHtml = document.querySelector('html');
+
+// Data
+const pokemon = ref([]);
+
+// Props
 const props = defineProps({
-  open: {
+  isOpen: {
     type: Boolean,
-    default: false,
+  },
+  currentPokemon: {
+    type: String,
   },
 });
+
+// Watch
+watch(props, () => {
+  getPokemon(props.currentPokemon);
+  if (props.isOpen) {
+    tagHtml.style.overflow = 'hidden';
+  }
+});
+
+// Emit
+const emit = defineEmits(['updateIsModalOpen']);
+
+// Get pokemons by api
+const getPokemon = async (name) => {
+  try {
+    const resp = await getPokemonByName(name);
+    pokemon.value = resp;
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+// Close modal
+const toggleModal = () => {
+  tagHtml.style.removeProperty('overflow');
+  emit('updateIsModalOpen', false);
+};
 </script>
 
 <style scoped>
 .modal {
-  position: absolute;
+  position: fixed;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -80,14 +124,17 @@ const props = defineProps({
   width: 100vw;
 }
 .modal__hero {
+  display: grid;
+  place-content: center;
   width: 100%;
   height: 14rem;
   background-image: url('/background.png');
   background-repeat: no-repeat;
   background-size: cover;
 }
-.modal__hero svg {
-  max-height: 10px;
+.modal__hero img {
+  height: 11.25rem;
+  width: auto;
 }
 .modal__content {
   padding: 1.25rem 1.875rem;
@@ -99,10 +146,23 @@ const props = defineProps({
   list-style: none;
 }
 .modal__content li {
+  display: flex;
+  align-items: center;
+  gap: 5px;
   padding: 0.625rem 0;
   color: var(--dark-gray);
   font-size: 1.125rem;
   border-bottom: 1px solid var(--light-gray);
+  text-transform: capitalize;
+}
+.modal__content li p {
+  margin: 0;
+}
+.modal__content li p::after {
+  content: ',';
+}
+.modal__content li p:last-child::after {
+  content: '';
 }
 .modal__content span {
   font-weight: 700;

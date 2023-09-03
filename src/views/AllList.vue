@@ -9,9 +9,15 @@
       @updateList="searchPokemon = $event"
       v-model:inputValue="inputValue"
     />
+    {{ currentPokemon }}
 
     <!-- List Pokemon -->
-    <List :key="2" :pokemons="searchPokemon" />
+    <List
+      :key="2"
+      :pokemons="searchPokemon"
+      @updateCurrentPokemon="currentPokemon = $event"
+      @updateIsModalOpen="isModalOpen = $event"
+    />
 
     <!-- No Pokemon -->
     <div class="not-found" v-show="searchPokemon.length === 0">
@@ -22,7 +28,11 @@
   </section>
 
   <!-- Modal -->
-  <Modal />
+  <Modal
+    :isOpen="isModalOpen"
+    :currentPokemon="currentPokemon"
+    @updateIsModalOpen="isModalOpen = $event"
+  />
 
   <!-- Footer -->
   <Footer />
@@ -44,9 +54,11 @@ import SearchInput from '../components/UI/SearchInput.vue';
 
 // Data
 const pokemons = ref([]);
-let inputValue = ref('')
+const searchPokemon = ref([]);
+const currentPokemon = ref('');
+const isModalOpen = ref(false);
+let inputValue = ref('');
 let isLoading = ref(true);
-let searchPokemon = ref([]);
 
 // Get pokemons by api
 const getAllPokemons = async () => {
@@ -58,7 +70,7 @@ const getAllPokemons = async () => {
     pokemons.value = [];
   }
 };
-const emit = defineEmits(['updateList']);
+const emit = defineEmits(['updateList', 'updateCurrentPokemon']);
 
 onMounted(() => {
   isLoading = true;
@@ -68,8 +80,13 @@ onMounted(() => {
 
 // Clear Search
 const clearSearch = () => {
-  inputValue.value = ''
-}
+  inputValue.value = '';
+};
+
+// Toggle Modal
+const toogleModal = () => {
+  console.log('hola');
+};
 </script>
 
 <style scoped>

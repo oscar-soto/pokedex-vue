@@ -1,7 +1,11 @@
 <template>
   <!-- List -->
   <ul class="pokemon-list">
-    <li v-for="pokemon in pokemons" :key="pokemon.index">
+    <li
+      v-for="pokemon in pokemons"
+      :key="pokemon.index"
+      @click="pokemonDetail(pokemon.name)"
+    >
       <p>{{ pokemon.name }}</p>
 
       <button>
@@ -13,12 +17,25 @@
 
 <script setup>
 import StarIcon from '../icons/StarIcon.vue';
+
 const props = defineProps({
   pokemons: {
     type: Array,
   },
+  onUpdateCurrentPokemon: {
+    type: Function
+  },
+  onUpdateIsModalOpen: {
+    type: Function
+  }
 });
 
+const emit = defineEmits(['UpdateCurrentPokemon', 'updateIsModalOpen']);
+
+const pokemonDetail = (name) => {
+  emit('UpdateCurrentPokemon', name);
+  emit('updateIsModalOpen', true);
+};
 </script>
 
 <style scoped>
