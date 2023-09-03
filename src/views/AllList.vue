@@ -2,14 +2,15 @@
   <Loader :isLoading="isLoading" />
 
   <section class="container list">
-    <div class="search">
-      <label for="search">
-        <Search />
-      </label>
-      <input type="text" id="search" placeholder="Search" />
-    </div>
+    <!-- Search Input -->
+    <SearchInput
+      :key="3"
+      :pokemons="pokemons"
+      @updateList="searchPokemon = $event"
+    />
 
-    <List :key="1" :pokemons="pokemons" />
+    <!-- List Pokemon -->
+    <List :key="1" :pokemons="searchPokemon" />
 
     <!-- No Pokemon -->
     <div class="not-found">
@@ -28,18 +29,23 @@
 
 <script setup>
 import { onMounted, ref } from 'vue';
+
 // Components
 import ButtonComponent from '../components/UI/ButtonComponent.vue';
 import List from '../components/layout/List.vue';
 import Footer from '../components/layout/Footer.vue';
 import Modal from '../components/UI/Modal.vue';
+
 // Icons
-import Search from '../components/icons/Search.vue';
 import { getPokemons } from '../api/pokemonService';
 import Loader from '../components/UI/Loader.vue';
+import SearchInput from '../components/UI/SearchInput.vue';
 
-const pokemons = ref({});
+// Data
+const pokemons = ref([]);
 let isLoading = ref(true);
+let searchPokemon = ref([]);
+console.log()
 
 // Get pokemons by api
 const getAllPokemons = async () => {
@@ -52,12 +58,13 @@ const getAllPokemons = async () => {
   }
 };
 
+const emit = defineEmits('updateList');
+
 onMounted(() => {
   isLoading = true;
   getAllPokemons();
   isLoading = false;
-})
-
+});
 </script>
 
 <style scoped>
@@ -65,37 +72,6 @@ onMounted(() => {
 .list {
   padding-top: 2.188rem;
   color: var(--black);
-}
-
-/* Input Search */
-.search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 2.5rem;
-  color: var(--gray);
-  font-family: 'Montserrat', sans-serif;
-}
-.search label {
-  position: absolute;
-  left: 0.938rem;
-}
-.search input {
-  width: 100%;
-  color: var(--black);
-  border: none;
-  padding: 0.875rem 2.688rem;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  outline: 2px solid #00000000;
-  transition: all 0.3s ease-in-out;
-}
-.search input::placeholder {
-  color: var(--gray);
-}
-.search input:focus {
-  outline-color: var(--gray);
 }
 
 /* Section no found pokemon */

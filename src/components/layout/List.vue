@@ -15,7 +15,7 @@
 import StarIcon from '../icons/StarIcon.vue';
 const props = defineProps({
   pokemons: {
-    type: Object,
+    type: Array,
   },
 });
 
