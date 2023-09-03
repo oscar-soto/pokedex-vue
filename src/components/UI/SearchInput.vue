@@ -3,16 +3,25 @@
     <label for="search">
       <Search />
     </label>
-    
-    <input type="text" id="search" placeholder="Search" @keyup="filter" />
+
+    <input
+      type="text"
+      id="search"
+      placeholder="Search"
+      v-model="value"
+      @keyup="filter"
+    />
   </div>
 </template>
 
 <script setup>
-import { watch } from 'vue';
+import { computed, watch } from 'vue';
 import Search from '../icons/Search.vue';
 
 const props = defineProps({
+  inputValue: {
+    type: String,
+  },
   pokemons: {
     type: Array,
   },
@@ -22,10 +31,11 @@ const props = defineProps({
 });
 
 // Events
-const emit = defineEmits('updateList');
+const emit = defineEmits(['updateList', 'update:inputValue']);
+
 watch(props, () => {
   emit('updateList', props.pokemons);
-})
+});
 
 // Filter
 const filter = (e) => {
@@ -41,6 +51,16 @@ const filter = (e) => {
     emit('updateList', newList);
   }
 };
+
+// Computed Input Value
+const value = computed({
+  get() {
+    return props.inputValue
+  },
+  set(newValue) {
+    emit('update:inputValue', newValue)
+  }
+})
 </script>
 
 <style scoped>

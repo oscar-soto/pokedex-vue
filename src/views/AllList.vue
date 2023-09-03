@@ -4,19 +4,20 @@
   <section class="container list">
     <!-- Search Input -->
     <SearchInput
-      :key="3"
+      :key="1"
       :pokemons="pokemons"
       @updateList="searchPokemon = $event"
+      v-model:inputValue="inputValue"
     />
 
     <!-- List Pokemon -->
-    <List :key="1" :pokemons="searchPokemon" />
+    <List :key="2" :pokemons="searchPokemon" />
 
     <!-- No Pokemon -->
-    <div class="not-found">
+    <div class="not-found" v-show="searchPokemon.length === 0">
       <h1>Uh-oh!</h1>
       <p>You look lost on your journey!</p>
-      <button-component> Go back home </button-component>
+      <button-component @click="clearSearch"> Go back home </button-component>
     </div>
   </section>
 
@@ -43,9 +44,9 @@ import SearchInput from '../components/UI/SearchInput.vue';
 
 // Data
 const pokemons = ref([]);
+let inputValue = ref('')
 let isLoading = ref(true);
 let searchPokemon = ref([]);
-console.log()
 
 // Get pokemons by api
 const getAllPokemons = async () => {
@@ -57,14 +58,18 @@ const getAllPokemons = async () => {
     pokemons.value = [];
   }
 };
-
-const emit = defineEmits('updateList');
+const emit = defineEmits(['updateList']);
 
 onMounted(() => {
   isLoading = true;
   getAllPokemons();
   isLoading = false;
 });
+
+// Clear Search
+const clearSearch = () => {
+  inputValue.value = ''
+}
 </script>
 
 <style scoped>
@@ -76,7 +81,7 @@ onMounted(() => {
 
 /* Section no found pokemon */
 .not-found {
-  display: none;
+  /* display: none; */
   text-align: center;
 }
 .not-found h1 {
