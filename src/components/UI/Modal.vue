@@ -36,7 +36,11 @@
             Share to my friends
           </button-component>
 
-          <button class="favorite__button">
+          <button
+            class="favorite__button"
+            :class="{ favorite: activeStart(pokemon.name) }"
+            @click.stop="favoritePokemon({ name: pokemon.name, index: i })"
+          >
             <StarIcon />
           </button>
         </div>
@@ -46,14 +50,14 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue';
-import { getPokemonByName } from '../../api/pokemonService';
-import StarIcon from '../icons/StarIcon.vue';
-import XIcon from '../icons/XIcon.vue';
-import ButtonComponent from './ButtonComponent.vue';
+import { ref, watch } from "vue";
+import { getPokemonByName } from "../../api/pokemonService";
+import { store } from "../../store";
+import StarIcon from "../icons/StarIcon.vue";
+import XIcon from "../icons/XIcon.vue";
+import ButtonComponent from "./ButtonComponent.vue";
 
-const tagHtml = document.querySelector('html');
-
+const tagHtml = document.querySelector("html");
 
 // Data
 const pokemon = ref([]);
@@ -72,12 +76,13 @@ const props = defineProps({
 watch(props, () => {
   getPokemon(props.currentPokemon);
   if (props.isOpen) {
-    tagHtml.style.overflow = 'hidden';
+    tagHtml.style.overflow = "hidden";
+    tagHtml.style.paddingRight = "16px";
   }
 });
 
 // Emit
-const emit = defineEmits(['updateIsModalOpen']);
+const emit = defineEmits(["updateIsModalOpen"]);
 
 // Get pokemons by api
 const getPokemon = async (name) => {
@@ -91,17 +96,26 @@ const getPokemon = async (name) => {
 
 // Close modal
 const toggleModal = () => {
-  tagHtml.style.removeProperty('overflow');
-  emit('updateIsModalOpen', false);
+  tagHtml.style.removeProperty("overflow");
+  tagHtml.style.removeProperty("padding-right");
+  emit("updateIsModalOpen", false);
 };
 
 // Copy info in clipboar
 const getPokemonInfo = () => {
-  const inputClipboar = document.querySelector('#clipboar');
+  const inputClipboar = document.querySelector("#clipboar");
   inputClipboar.select();
   inputClipboar.setSelectionRange(0, 999999); // Mobile
 
   navigator.clipboard.writeText(inputClipboar.value);
+};
+
+// Btn Favorite
+const favoritePokemon = ({ name, index }) => {
+  store.addFavoritePokemon({ name, index });
+};
+const activeStart = (name) => {
+  return store.favoritePokemon.find((p) => p.name === name);
 };
 </script>
 
@@ -144,7 +158,7 @@ const getPokemonInfo = () => {
   place-content: center;
   width: 100%;
   height: 14rem;
-  background-image: url('/background.png');
+  background-image: url("/background.png");
   background-repeat: no-repeat;
   background-size: cover;
 }
@@ -175,10 +189,10 @@ const getPokemonInfo = () => {
   margin: 0;
 }
 .modal__content li p::after {
-  content: ',';
+  content: ",";
 }
 .modal__content li p:last-child::after {
-  content: '';
+  content: "";
 }
 .modal__content span {
   font-weight: 700;

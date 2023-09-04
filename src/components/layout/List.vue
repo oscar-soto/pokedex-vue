@@ -2,13 +2,16 @@
   <!-- List -->
   <ul class="pokemon-list">
     <li
-      v-for="pokemon in pokemons"
-      :key="pokemon.index"
+      v-for="(pokemon, i) in pokemons"
+      :key="i"
       @click="pokemonDetail(pokemon.name)"
     >
       <p>{{ pokemon.name }}</p>
 
-      <button>
+      <button
+        @click.stop="favoritePokemon({ name: pokemon.name, index: i })"
+        :class="{ favorite: activeStart(pokemon.name) }"
+      >
         <StarIcon />
       </button>
     </li>
@@ -16,26 +19,35 @@
 </template>
 
 <script setup>
-import StarIcon from '../icons/StarIcon.vue';
+import StarIcon from "../icons/StarIcon.vue";
+import { store } from "../../store/index.js";
 
 const props = defineProps({
   pokemons: {
     type: Array,
   },
   onUpdateCurrentPokemon: {
-    type: Function
+    type: Function,
   },
   onUpdateIsModalOpen: {
-    type: Function
-  }
+    type: Function,
+  },
 });
 
-const emit = defineEmits(['UpdateCurrentPokemon', 'updateIsModalOpen']);
+const emit = defineEmits(["UpdateCurrentPokemon", "updateIsModalOpen"]);
 
-const pokemonDetail = (name) => {
-  emit('UpdateCurrentPokemon', name);
-  emit('updateIsModalOpen', true);
+const pokemonDetail = (name, e) => {
+  emit("UpdateCurrentPokemon", name);
+  emit("updateIsModalOpen", true);
 };
+
+const favoritePokemon = ({ name, index }) => {
+  store.addFavoritePokemon({ name, index });
+};
+const activeStart = (name) => {
+  return store.favoritePokemon.find((p) => p.name === name);
+};
+
 </script>
 
 <style scoped>
@@ -74,7 +86,22 @@ const pokemonDetail = (name) => {
   border-radius: 999999px;
   cursor: pointer;
 }
-.pokemon-list button.favorite {
+.pokemon-list button.favorite svg {
   color: var(--yelow);
+  animation: bigStart .5s ease-in-out
+}
+
+@keyframes bigStart {
+  0% {
+    transform: scale(1);
+  }
+
+  50% {
+    transform: scale(1.5);
+  }
+
+  100% { 
+    transform: scale(1);
+  }
 }
 </style>

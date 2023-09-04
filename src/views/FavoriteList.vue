@@ -7,30 +7,60 @@
       <input type="text" id="search" placeholder="Search" />
     </div>
 
-    <List />
+    <List
+      :pokemons="orderPokemon(store.favoritePokemon)"
+      @updateCurrentPokemon="currentPokemon = $event"
+      @updateIsModalOpen="isModalOpen = $event"
+    />
 
     <!-- No Pokemon -->
-    <div class="not-found">
+    <div class="not-found" v-show="store.favoritePokemon.length === 0">
       <h1>Uh-oh!</h1>
       <p>You look lost on your journey!</p>
-      <button-component> Go back home </button-component>
+      <button-component @click="pageAll()"> Go back home </button-component>
     </div>
   </section>
+
+  <!-- Modal -->
+  <Modal
+    :isOpen="isModalOpen"
+    :currentPokemon="currentPokemon"
+    @updateIsModalOpen="isModalOpen = $event"
+  />
+
   <Footer />
 </template>
 
 <script setup>
-import ButtonComponent from '../components/UI/ButtonComponent.vue';
-import List from '../components/layout/List.vue';
-import Footer from '../components/layout/Footer.vue';
+import { ref } from "vue";
+import { store } from "../store";
+
+// Componentes
+import ButtonComponent from "../components/UI/ButtonComponent.vue";
+import List from "../components/layout/List.vue";
+import Footer from "../components/layout/Footer.vue";
+import Modal from '../components/UI/Modal.vue';
 // Icons
-import Search from '../components/icons/Search.vue';
+import Search from "../components/icons/Search.vue";
+
+// Data
+const currentPokemon = ref("");
+const isModalOpen = ref(false);
+
+// Order bokemon by Index
+const orderPokemon = (pokemons) => {
+  return pokemons.sort((a, b) => a.index - b.index);
+};
+
+const pageAll = () => {
+  return window.location.href = '#/all'
+}
 </script>
 
 <style scoped>
 /* General */
 .list {
-  padding-top: 2.188rem ;
+  padding-top: 2.188rem;
   color: var(--black);
 }
 
@@ -42,7 +72,7 @@ import Search from '../components/icons/Search.vue';
   width: 100%;
   margin-bottom: 2.5rem;
   color: var(--gray);
-  font-family: 'Montserrat', sans-serif;
+  font-family: "Montserrat", sans-serif;
 }
 .search label {
   position: absolute;
@@ -67,7 +97,6 @@ import Search from '../components/icons/Search.vue';
 
 /* Section no found pokemon */
 .not-found {
-  display: none;
   text-align: center;
 }
 .not-found h1 {

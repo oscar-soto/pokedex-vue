@@ -56,6 +56,7 @@ const pokemons = ref([]);
 const searchPokemon = ref([]);
 const currentPokemon = ref('');
 const isModalOpen = ref(false);
+const isFavorite = ref(false);
 let inputValue = ref('');
 let isLoading = ref(true);
 
@@ -81,11 +82,6 @@ const emit = defineEmits(['updateList', 'updateCurrentPokemon']);
 // Clear Search
 const clearSearch = () => {
   inputValue.value = '';
-};
-
-// Toggle Modal
-const toogleModal = () => {
-  console.log('hola');
 };
 </script>
 
