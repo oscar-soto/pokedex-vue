@@ -4,7 +4,6 @@
   <section class="container list">
     <!-- Search Input -->
     <SearchInput
-      :key="1"
       :pokemons="pokemons"
       @updateList="searchPokemon = $event"
       v-model:inputValue="inputValue"
@@ -12,14 +11,13 @@
 
     <!-- List Pokemon -->
     <List
-      :key="2"
       :pokemons="searchPokemon"
       @updateCurrentPokemon="currentPokemon = $event"
       @updateIsModalOpen="isModalOpen = $event"
     />
 
     <!-- No Pokemon -->
-    <div class="not-found" v-show="searchPokemon.length === 0">
+    <div class="not-found" v-show="noPokemonFound">
       <h1>Uh-oh!</h1>
       <p>You look lost on your journey!</p>
       <button-component @click="clearSearch"> Go back home </button-component>
@@ -38,7 +36,7 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue';
+import { computed, onMounted, ref } from 'vue';
 
 // Components
 import ButtonComponent from '../components/UI/ButtonComponent.vue';
@@ -56,29 +54,33 @@ const pokemons = ref([]);
 const searchPokemon = ref([]);
 const currentPokemon = ref('');
 const isModalOpen = ref(false);
-let inputValue = ref('');
-let isLoading = ref(true);
+const inputValue = ref('');
+const isLoading = ref(true);
 
-onMounted(() => {
-  isLoading = true;
-  getAllPokemons();
-  isLoading = false;
-});
-
-// Get pokemons by api
-const getAllPokemons = async () => {
+// Get Pokemons
+onMounted(async () => {
   try {
     const { results } = await getPokemons();
     pokemons.value = results;
+    searchPokemon.value = results;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     pokemons.value = [];
+    searchPokemon.value = [];
+  } finally {
+    setTimeout(() => {
+      isLoading.value = false;
+    }, 300);
   }
-};
+});
+
+// Computed
+const noPokemonFound = computed(() => searchPokemon.value.length === 0);
 
 // Clear Search
 const clearSearch = () => {
   inputValue.value = '';
+  searchPokemon.value = pokemons.value;
 };
 </script>
 

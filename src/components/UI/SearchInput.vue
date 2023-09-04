@@ -15,7 +15,7 @@
 </template>
 
 <script setup>
-import { computed, watch } from 'vue';
+import { computed, onMounted } from 'vue';
 import Search from '../icons/Search.vue';
 
 const props = defineProps({
@@ -33,9 +33,9 @@ const props = defineProps({
 // Events
 const emit = defineEmits(['updateList', 'update:inputValue']);
 
-watch(props, () => {
+onMounted(() => {
   emit('updateList', props.pokemons);
-});
+})
 
 // Filter
 const filter = (e) => {

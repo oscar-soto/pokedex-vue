@@ -1,23 +1,23 @@
 <template>
   <section class="container list">
-    <div class="search">
-      <label for="search">
-        <Search />
-      </label>
-      <input type="text" id="search" placeholder="Search" />
-    </div>
+    <!-- Search Input -->
+    <SearchInput
+      :pokemons="pokemons"
+      @updateList="searchPokemon = $event"
+      v-model:inputValue="inputValue"
+    />
 
     <List
-      :pokemons="orderPokemon(store.favoritePokemon)"
+      :pokemons="searchPokemon"
       @updateCurrentPokemon="currentPokemon = $event"
       @updateIsModalOpen="isModalOpen = $event"
     />
 
     <!-- No Pokemon -->
-    <div class="not-found" v-show="store.favoritePokemon.length === 0">
+    <div class="not-found" v-show="noPokemonFound">
       <h1>Uh-oh!</h1>
       <p>You look lost on your journey!</p>
-      <button-component @click="pageAll()"> Go back home </button-component>
+      <button-component @click="clearSearch"> Go back home </button-component>
     </div>
   </section>
 
@@ -32,29 +32,56 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
-import { store } from "../store";
+import { computed, onMounted, ref, watch } from 'vue';
+import { store } from '../store';
 
 // Componentes
-import ButtonComponent from "../components/UI/ButtonComponent.vue";
-import List from "../components/layout/List.vue";
-import Footer from "../components/layout/Footer.vue";
+import ButtonComponent from '../components/UI/ButtonComponent.vue';
+import List from '../components/layout/List.vue';
+import Footer from '../components/layout/Footer.vue';
 import Modal from '../components/UI/Modal.vue';
-// Icons
-import Search from "../components/icons/Search.vue";
+import SearchInput from '../components/UI/SearchInput.vue';
 
 // Data
-const currentPokemon = ref("");
+const pokemons = ref([]);
+const searchPokemon = ref([]);
+const currentPokemon = ref('');
 const isModalOpen = ref(false);
+const inputValue = ref('');
+
+// Mounted
+onMounted(() => {
+  orderPokemonSearch(store.favoritePokemon);
+});
+
+// if the store change
+watch(store, () => {
+  orderPokemonSearch(store.favoritePokemon);
+});
+
+// Computed
+const noPokemonFound = computed(() => searchPokemon.value.length === 0);
 
 // Order bokemon by Index
-const orderPokemon = (pokemons) => {
-  return pokemons.sort((a, b) => a.index - b.index);
+const orderPokemonSearch = (pokemonsList) => {
+  if (!pokemonsList) return [];
+
+  const orderPokemonList = pokemonsList.sort((a, b) => a.index - b.index);
+  pokemons.value = orderPokemonList;
+  searchPokemon.value = orderPokemonList;
 };
 
-const pageAll = () => {
-  return window.location.href = '#/all'
-}
+// Clear Search
+const clearSearch = () => {
+  if (store.favoritePokemon.length) {
+    inputValue.value = '';
+    searchPokemon.value = pokemons.value;
+    return;
+  }
+
+  // If There are not pokemons return to home
+  return (window.location.href = '#/all');
+};
 </script>
 
 <style scoped>
@@ -62,37 +89,6 @@ const pageAll = () => {
 .list {
   padding-top: 2.188rem;
   color: var(--black);
-}
-
-/* Input Search */
-.search {
-  position: relative;
-  display: flex;
-  align-items: center;
-  width: 100%;
-  margin-bottom: 2.5rem;
-  color: var(--gray);
-  font-family: "Montserrat", sans-serif;
-}
-.search label {
-  position: absolute;
-  left: 0.938rem;
-}
-.search input {
-  width: 100%;
-  color: var(--black);
-  border: none;
-  padding: 0.875rem 2.688rem;
-  border-radius: 0.375rem;
-  box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.04), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  outline: 2px solid #00000000;
-  transition: all 0.3s ease-in-out;
-}
-.search input::placeholder {
-  color: var(--gray);
-}
-.search input:focus {
-  outline-color: var(--gray);
 }
 
 /* Section no found pokemon */
