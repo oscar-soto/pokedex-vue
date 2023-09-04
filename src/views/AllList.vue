@@ -56,7 +56,6 @@ const pokemons = ref([]);
 const searchPokemon = ref([]);
 const currentPokemon = ref('');
 const isModalOpen = ref(false);
-const isFavorite = ref(false);
 let inputValue = ref('');
 let isLoading = ref(true);
 
@@ -76,8 +75,6 @@ const getAllPokemons = async () => {
     pokemons.value = [];
   }
 };
-
-const emit = defineEmits(['updateList', 'updateCurrentPokemon']);
 
 // Clear Search
 const clearSearch = () => {

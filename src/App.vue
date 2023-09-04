@@ -3,7 +3,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue';
+import { computed, onBeforeMount, onMounted, ref } from 'vue';
 
 import Home from './views/Home.vue';
 import AllList from './views/AllList.vue';
@@ -26,6 +26,12 @@ onMounted(() => {
     currentPath.value = window.location.hash;
   });
 });
+
+onBeforeMount(() => {
+  window.removeEventListener('hashchange', () => {
+    currentPath.value = window.location.hash;
+  })
+})
 </script>
 
 <style>
