@@ -1,4 +1,6 @@
 <template>
+  <Loader :isLoading="isLoading" />
+
   <section class="container list">
     <!-- Search Input -->
     <SearchInput
@@ -34,6 +36,7 @@ import { store } from '../store';
 // Componentes
 import List from '../components/layout/List.vue';
 import Footer from '../components/layout/Footer.vue';
+import Loader from '../components/UI/Loader.vue';
 import Modal from '../components/UI/Modal.vue';
 import SearchInput from '../components/UI/SearchInput.vue';
 import NotFound from '../components/UI/NotFound.vue';
@@ -42,12 +45,16 @@ import NotFound from '../components/UI/NotFound.vue';
 const pokemons = ref([]);
 const searchPokemon = ref([]);
 const currentPokemon = ref('');
-const isModalOpen = ref(false);
 const inputValue = ref('');
+const isModalOpen = ref(false);
+const isLoading = ref(true);
 
 // Mounted
 onMounted(() => {
   orderPokemonSearch(store.favoritePokemon);
+  setTimeout(() => {
+    isLoading.value = false;
+  }, 300);
 });
 
 // if the store change
