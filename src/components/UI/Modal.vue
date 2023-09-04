@@ -7,7 +7,7 @@
 
       <div class="modal__hero">
         <img
-          :src="pokemon.sprites?.other.dream_world.front_default"
+          :src="`${pokemon.sprites?.other['official-artwork'].front_default}`"
           :alt="`pokemon ${pokemon?.name}`"
         />
       </div>
@@ -73,11 +73,10 @@ const props = defineProps({
 });
 
 // Watch
-watch(props, () => {
-  getPokemon(props.currentPokemon);
+watch(props, async () => {
+  await getPokemon(props.currentPokemon);
   if (props.isOpen) {
     tagHtml.style.overflow = "hidden";
-    tagHtml.style.paddingRight = "16px";
   }
 });
 
@@ -97,7 +96,6 @@ const getPokemon = async (name) => {
 // Close modal
 const toggleModal = () => {
   tagHtml.style.removeProperty("overflow");
-  tagHtml.style.removeProperty("padding-right");
   emit("updateIsModalOpen", false);
 };
 
@@ -151,7 +149,7 @@ const activeStart = (name) => {
 .modal__container {
   position: relative;
   max-width: 570px;
-  width: 100vw;
+  width: calc(100vw - 64px);
 }
 .modal__hero {
   display: grid;

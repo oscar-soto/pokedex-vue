@@ -10,7 +10,7 @@ const pokemonApi = axio.create({
 
 
 export const getPokemons = async () => {
-  const res = pokemonApi.get('/pokemon?limit=-1');
+  const res = pokemonApi.get('/pokemon');
   const {data} = await res
   return data
 }

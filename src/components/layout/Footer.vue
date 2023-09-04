@@ -42,8 +42,9 @@ const pageFavorite = () => {
 footer {
   position: fixed;
   bottom: 0;
+  left: 0;
   width: 100%;
-  padding: 1.125rem 0;
+  padding: 1.125rem 32px;
   background-color: #fff;
 }
 .footer__container {

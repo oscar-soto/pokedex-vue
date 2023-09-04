@@ -43,6 +43,8 @@ onMounted(() => {
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
@@ -52,6 +54,7 @@ body {
 
 #app {
   min-height: 100vh;
+  padding: 0 32px 90px;
 }
 
 .container {
