@@ -17,11 +17,7 @@
     />
 
     <!-- No Pokemon -->
-    <div class="not-found" v-show="noPokemonFound">
-      <h1>Uh-oh!</h1>
-      <p>You look lost on your journey!</p>
-      <button-component @click="clearSearch"> Go back home </button-component>
-    </div>
+    <NotFound :noPokemonFound="noPokemonFound" :clear-search="clearSearch" />
   </section>
 
   <!-- Modal -->
@@ -39,10 +35,10 @@
 import { computed, onMounted, ref } from 'vue';
 
 // Components
-import ButtonComponent from '../components/UI/ButtonComponent.vue';
 import List from '../components/layout/List.vue';
 import Footer from '../components/layout/Footer.vue';
 import Modal from '../components/UI/Modal.vue';
+import NotFound from '../components/UI/NotFound.vue';
 
 // Icons
 import { getPokemons } from '../api/pokemonService';
@@ -74,7 +70,7 @@ onMounted(async () => {
   }
 });
 
-// Computed
+// Not pokemon
 const noPokemonFound = computed(() => searchPokemon.value.length === 0);
 
 // Clear Search
@@ -83,26 +79,3 @@ const clearSearch = () => {
   searchPokemon.value = pokemons.value;
 };
 </script>
-
-<style scoped>
-/* General */
-.list {
-  padding-top: 2.188rem;
-  color: var(--black);
-}
-
-/* Section no found pokemon */
-.not-found {
-  /* display: none; */
-  text-align: center;
-}
-.not-found h1 {
-  font-size: 2.25rem;
-  margin: 0 0 0.625rem;
-}
-.not-found p {
-  color: var(--dark-gray);
-  font-size: 1.25rem;
-  margin: 0 0 1.563rem;
-}
-</style>

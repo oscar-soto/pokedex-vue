@@ -67,4 +67,9 @@ body {
   max-width: 570px;
   margin: 0 auto;
 }
+
+.list {
+  padding-top: 2.188rem;
+  color: var(--black);
+}
 </style>
